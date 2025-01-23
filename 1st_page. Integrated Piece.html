@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Integrated Piece | قطع مدمجة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0078ce;
+            --background-dark: #060412;
+            --text-light: #d4d4d4;
+            --footer-bg: linear-gradient(to bottom, #040409, #2b638e);
+            --text-gray: #b5b5b5;
+            --card-bg: #333;
+            --hover-color: #0099ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 0.2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .site-logo {
+            height: 40px;
+            width: auto;
+            order: 2;
+        }
+
+        .nav-brand {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            text-decoration: none;
+            order: 1;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            order: 3;
+        }
+
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-menu i {
+            margin-left: 0.5rem;
+        }
+
+        /* Hero Banner Styles */
+        .hero-banner {
+    margin-top: 64px;
+    position: relative;
+    height: 80vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    align-items: flex-end;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}
+
+.hero-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Add gradient overlay */
+.hero-slide::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%; /* Adjust height of gradient as needed */
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.399) 30%,
+        rgba(19, 18, 18, 0.529) 60%,
+        var(--background-dark) 100%
+    );
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    width: 100%;
+    padding: 4rem 3rem;
+    color: white;
+    z-index: 1;
+    
+    text-align: right;
+}
+
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .age-rating {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgb(255, 0, 0);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .watch-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .watch-button:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        /* Manga Slider Styles */
+        .slider-container {
+            padding: 4rem 2rem 2rem;
+            background: var(--background-dark);
+        }
+
+        .slider-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            padding-right: 1rem;
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .card-slider {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .card-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            flex: 0 0 auto;
+            width: 220px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        /* Footer Styles */
+        .footer {
+    background: linear-gradient(to bottom, #04051067, #000000);
+    padding: 6rem 2rem 4rem;
+    margin-top: 4rem;
+    
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4rem;
+}
+
+.footer-section h3 {
+    color: white;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 1.2rem;
+}
+.footer-links a {
+    color: var(--text-gray);
+    text-decoration: none;
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    gap: 0.5rem; /* Controls the space between icon and text */
+    direction: rtl; /* Ensures proper direction for Arabic content */
+}
+
+.footer-links .icon {
+    font-size: 1.3rem; /* Icon size */
+    color: var(--primary-color);
+    margin: 0; /* Removes any extra space */
+    flex-shrink: 0; /* Prevents icons from shrinking */
+    order: 2; /* Ensures the icon appears to the left of the text in RTL */
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+    transform: translateX(-10px);
+}
+
+
+.card .author img {
+    width: 40px;  /* Increased from 24px */
+    height: 40px; /* Increased from 24px */
+    border-radius: 50%;
+    margin-left: 12px;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+}
+
+.card .author span {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Additional styles to ensure proper layout */
+.stories-slider .card-content {
+    padding: 1.2rem;
+}
+
+/* Ensure consistent height for author section */
+.stories-slider .card {
+    display: flex;
+    flex-direction: column;
+}
+
+.stories-slider .card .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.stories-slider .card .author {
+    margin-top: auto;
+}
+        .footer-links .icon {
+            width: 100px;
+            margin-left: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Mobile Navigation */
+        .mobile-controls {
+            display: none;
+            order: 4;
+            gap: 1rem;
+        }
+
+        .hamburger, .search-button {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .search-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 1rem;
+    z-index: 1001;
+    transition: all 0.3s ease;
+}
+
+.search-overlay.active {
+    display: block;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #333;
+    color: white;
+    font-size: 1rem;
+    direction: rtl;
+}
+
+.search-close {
+    position: absolute;
+    left: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* Account dropdown styles */
+.account-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.95);
+    border-radius: 4px;
+    padding: 0.5rem 0;
+    min-width: 150px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.account-dropdown.active {
+    display: block;
+}
+
+.account-dropdown a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    color: white;
+    text-decoration: none;
+    text-align: right;
+    transition: background-color 0.3s ease;
+}
+
+.account-dropdown a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.account-dropdown i {
+    margin-left: 0.5rem;
+}
+
+.left-controls {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+}
+.videos-slider .card {
+    width: 300px; /* Wider cards for videos */
+}
+
+.videos-slider .card img {
+    height: 169px; /* 16:9 aspect ratio */
+}
+
+.card .duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.card .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card .video-overlay i {
+    font-size: 3rem;
+    color: white;
+}
+
+.card:hover .video-overlay {
+    opacity: 1;
+}
+
+.stories-slider .card {
+    background: linear-gradient(145deg, var(--card-bg), #3a3a3a);
+}
+
+.card .category {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.card .author {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+.card .author img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile Navigation */
+        .mobile-controls {
+    display: none;
+    order: 1;
+    gap: 1rem;
+    width: 100%; /* Added to help with positioning */
+    justify-content: space-between; /* Space elements across the full width */
+}
+
+.hamburger, .search-button, .account-button {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.right-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.left-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive Design - Update the navigation section */
+@media (max-width: 768px) {
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0.5rem;
+    }
+    .hero-banner {
+        height: 60vh;
+        margin-top: 60px;
+    }
+
+    .hero-slide::after {
+        height: 70%; /* Slightly taller gradient on mobile */
+    }
+}
+    .site-logo {
+        order: 2;
+    }
+
+    .nav-brand {
+        display: none;
+    }
+
+    .mobile-controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .hamburger, .search-button, .account-button {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu a {
+        width: 100%;
+        text-align: right;
+    }
+    .videos-slider .card {
+        width: 260px;
+    }
+    
+    .videos-slider .card img {
+        height: 146px;
+    }
+    .nav-content {
+                padding: 0.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .card-slider {
+                gap: 1rem;
+                padding: 0.5rem;
+            }
+        
+
+
+
+        @media (max-width: 480px) {
+            .hero-banner {
+             height: 50vh;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem;
+                }
+            }
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                width: 160px;
+            }
+
+            .card img {
+                height: 220px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        
+            .videos-slider .card {
+        width: 220px;
+    }
+    
+    .videos-slider .card img {
+        height: 124px;
+    }
+
+
+    </style>
+</head>
+<body>
+    <!-- Add this right after the opening <body> tag -->
+<div class="search-overlay">
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="ابحث هنا...">
+        <button class="search-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-content">
+        <img src="logo.png" alt="Site Logo" class="site-logo">
+        <h1 class="nav-brand">INTEGRATED PIECE | قطع مدمجة</h1>
+        <div class="mobile-controls">
+            <div class="right-controls">
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div> 
+            <div class="left-controls">
+                <button class="account-button">
+                    <i class="fas fa-user"></i>
+                </button>
+                <div class="account-dropdown">
+                    <a href="#"><i class="fas fa-sign-in-alt"></i>تسجيل الدخول</a>
+                    <a href="#"><i class="fas fa-user-plus"></i>إنشاء حساب</a>
+                </div>
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <a href="1st_page. Integrated Piece.html"><i class="fas fa-home"></i> الرئيسية</a>
+            <a href="manga.html"><i class="fas fa-pen"></i> المانغا</a>
+            <a href="storeis.html"><i class="fas fa-book"></i> القصص</a>
+            <a href="#"><i class="fas fa-tv"></i> المونتاج</a>
+        </div>
+    </div>
+</nav>
+    <div class="hero-banner">
+        <div class="hero-slide active">
+            <img src="3.jpg" alt="Attack on Titan" class="hero-image">
+            <div class="hero-content">
+                <span class="age-rating">+18</span>
+                <h2 class="hero-title">هجوم العمالقة</h2>
+                <p class="hero-description">آخر أمل للبشرية ضد العمالقة يكمن في أيدي إيرين يغر وأصدقائه. انضم إليهم في معركتهم الملحمية من أجل البقاء.</p>
+                <a href="#" class="watch-button">ابدأ المشاهدة</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <img src="4.jpg" alt="Demon Slayer" class="hero-image">
+            <div class="hero-content">
+                <span class="age-rating">+18</span>
+                <h2 class="hero-title">قاتل الشياطين</h2>
+                <p class="hero-description">تابع رحلة تانجيرو لعلاج أخته ومحاربة الشياطين في هذه المغامرة المذهلة. استمتع بالرسوم المتحركة المذهلة والمعارك الملحمية.</p>
+                <a href="#" class="watch-button">ابدأ المشاهدة</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <img src="123.jpg" alt="Demon Slayer" class="hero-image">
+            <div class="hero-content">
+                <span class="age-rating">+18</span>
+                <h2 class="hero-title">لولوش المتمرد</h2>
+                <p class="hero-description">القصة تدور حول لولوش لامبروج و هو أمير بريطاني الذي تم نفيه و أخته نانالي ( التي أُقعدت و فقدت بصرها بعد أن قتلت امها امام عينها )</p>
+                <a href="#" class="watch-button">ابدأ المشاهدة</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <img src="5.jpg" alt="Demon Slayer" class="hero-image">
+            <div class="hero-content">
+                <span class="age-rating">+18</span>
+                <h2 class="hero-title">دراغون بول</h2>
+                <p class="hero-description">**دراغون بول** أنمي أكشن ملحمي يتبع مغامرات "غوكو" في البحث عن كرات التنين السبع وتحقيق الأمنيات، مليء بالمعارك والشخصيات القوية!</p>
+                <a href="#" class="watch-button">ابدأ المشاهدة</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-container">
+        <h2 class="slider-title">أحدث المانغا</h2>
+        <div class="card-slider">
+            <!-- Manga cards added by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Second: Stories Section -->
+    <div class="slider-container">
+        <h2 class="slider-title">أحدث القصص</h2>
+        <div class="card-slider stories-slider">
+            <!-- Story cards added by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Third: Videos Section -->
+    <div class="slider-container">
+        <h2 class="slider-title">أحدث الفيديوهات</h2>
+        <div class="card-slider videos-slider">
+            <!-- Video cards added by JavaScript -->
+        </div>
+    </div>
+    
+ 
+   
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>تابعنا</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-telegram icon"></i>تيليجرام</a></li>
+                    <li><a href="#"><i class="fab fa-facebook icon"></i>فيسبوك</a></li>
+                    <li><a href="#"><i class="fab fa-instagram icon"></i>انستغرام</a></li>
+                    <li><a href="#"><i class="fab fa-twitter icon"></i>تويتر</a></li>
+                    <li><a href="#"><i class="fab fa-youtube icon"></i>يوتيوب</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok icon"></i>تيك توك</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>الحساب</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-sign-in-alt icon"></i>تسجيل الدخول</a></li>
+                    <li><a href="#"><i class="fas fa-user-plus icon"></i>إنشاء حساب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>قطع مدمجة</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-info-circle icon"></i>عن الموقع</a></li>
+                    <li><a href="#"><i class="fas fa-file-contract icon"></i>الشروط</a></li>
+                    <li><a href="#"><i class="fas fa-cookie-bite icon"></i>سياسة الكوكيز</a></li>
+                    <li><a href="#"><i class="fas fa-mobile-alt icon"></i>التطبيقات</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>التصفح</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-gamepad icon"></i>الألعاب</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+  // Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Navigation elements
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const searchButton = document.querySelector('.search-button');
+    const searchOverlay = document.querySelector('.search-overlay');
+    const searchClose = document.querySelector('.search-close');
+    const searchInput = document.querySelector('.search-input');
+    const accountButton = document.querySelector('.account-button');
+    const accountDropdown = document.querySelector('.account-dropdown');
+
+    // Mobile menu toggle
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Search functionality
+    searchButton.addEventListener('click', () => {
+        searchOverlay.classList.add('active');
+        searchInput.focus();
+    });
+
+    searchClose.addEventListener('click', () => {
+        searchOverlay.classList.remove('active');
+    });
+
+    // Close search on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+        }
+    });
+
+    // Account dropdown functionality
+    accountButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        accountDropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!accountButton.contains(e.target)) {
+            accountDropdown.classList.remove('active');
+        }
+    });
+
+    // Hero banner slideshow
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        heroSlides.forEach(slide => slide.classList.remove('active'));
+        heroSlides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % heroSlides.length;
+        showSlide(currentSlide);
+    }
+
+    setInterval(nextSlide, 5000);
+
+    // Card creation functions
+    const createMangaCards = () => {
+        const slider = document.querySelector('.card-slider');
+        const mangaData = [
+            { title: 'هجوم العمالقة', image: 'manga1.jpg' },
+            { title: 'قاتل الشياطين', image: 'manga2.jpg' },
+            { title: 'ون بيس', image: 'manga3.jpg' },
+            { title: 'ناروتو', image: 'manga4.jpg' },
+            { title: 'دراغون بول', image: 'manga5.jpg' },
+            { title: 'دفتر الموت', image: 'manga6.jpg' }
+        ];
+
+        mangaData.forEach(manga => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${manga.image}" alt="${manga.title}">
+                <div class="card-content">
+                    <h3>${manga.title}</h3>
+                </div>
+            `;
+            slider.appendChild(card);
+        });
+    };
+
+    const createStoryCards = () => {
+        const slider = document.querySelector('.stories-slider');
+        const storyData = [
+            { 
+                title: 'قصة العصفور الأزرق',
+                category: 'خيال',
+                image: 'story1.jpg',
+                author: 'اكسيمو',
+                authorImg: 'pro5.jpg'
+            },
+            { 
+                title: 'رحلة إلى المريخ',
+                category: 'مغامرات',
+                image: 'story2.jpg',
+                author: 'قطع مدمجة',
+                authorImg: 'logo.png'
+            },
+            { 
+                title: 'سر الغابة المسحورة',
+                category: 'فانتازيا',
+                image: 'story3.jpg',
+                author: 'محمد علي',
+                authorImg: 'pro3.jpg'
+            },
+            { 
+                title: 'حكايات من الماضي',
+                category: 'تاريخ',
+                image: 'story4.jpg',
+                author: 'سنبل أغا',
+                authorImg: 'pro4.jpg'
+            },
+            { 
+                title: 'أسرار المدينة',
+                category: 'غموض',
+                image: 'story5.jpg',
+                author: 'عمر حسن',
+                authorImg: 'pro1.jpg'
+            }
+        ];
+
+        storyData.forEach(story => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${story.image}" alt="${story.title}">
+                <div class="card-content">
+                    <span class="category">${story.category}</span>
+                    <h3>${story.title}</h3>
+                    <div class="author">
+                        <img src="${story.authorImg}" alt="${story.author}">
+                        <span>${story.author}</span>
+                    </div>
+                </div>
+            `;
+            slider.appendChild(card);
+        });
+    };
+
+    const createVideoCards = () => {
+        const slider = document.querySelector('.videos-slider');
+        const videoData = [
+            { 
+                title: 'شرح تقنيات الرسم',
+                duration: '10:25',
+                image: 'manga1.jpg'
+            },
+            { 
+                title: 'مراجعة أنمي جديد',
+                duration: '15:30',
+                image: 'manga2.jpg'
+            },
+            { 
+                title: 'تعليم المونتاج',
+                duration: '20:15',
+                image: 'manga3.jpg'
+            },
+            { 
+                title: 'نصائح للمبتدئين',
+                duration: '08:45',
+                image: 'manga4.jpg'
+            },
+            { 
+                title: 'أفضل لحظات الأنمي',
+                duration: '12:50',
+                image: 'manga5.jpg'
+            }
+        ];
+
+        videoData.forEach(video => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div style="position: relative;">
+                    <img src="${video.image}" alt="${video.title}">
+                    <span class="duration">${video.duration}</span>
+                    <div class="video-overlay">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>${video.title}</h3>
+                </div>
+            `;
+            slider.appendChild(card);
+        });
+    };
+
+    // Initialize all card sliders
+    createMangaCards();
+    createStoryCards();
+    createVideoCards();
+
+    // Add touch slider functionality to all sliders
+    const sliders = document.querySelectorAll('.card-slider');
+    sliders.forEach(slider => {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.style.cursor = 'grabbing';
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+    });
+});
+    </script>
+</body>
+</html>
