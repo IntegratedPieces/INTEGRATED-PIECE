@@ -1,0 +1,229 @@
+/* Navigation Styles */
+:root {
+    --primary-color: #0078ce;
+    --text-light: #d4d4d4;
+    --background-dark: #060412;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: 0.2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.site-logo {
+    height: 40px;
+    width: auto;
+    order: 2;
+}
+
+.nav-brand {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    order: 1;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    order: 3;
+}
+
+.nav-menu a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.8rem 1.2rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    font-weight: bold;
+    position: relative;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
+}
+
+.nav-menu a:hover {
+    color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-menu i {
+    margin-left: 0.5rem;
+}
+
+/* Mobile Navigation Styles */
+.mobile-controls {
+    display: none;
+    order: 4;
+    gap: 1rem;
+}
+
+.hamburger, .search-button, .account-button {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.search-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 1rem;
+    z-index: 1001;
+    transition: all 0.3s ease;
+}
+
+.search-overlay.active {
+    display: block;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #333;
+    color: white;
+    font-size: 1rem;
+    direction: rtl;
+}
+
+.search-close {
+    position: absolute;
+    left: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.account-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.95);
+    border-radius: 4px;
+    padding: 0.5rem 0;
+    min-width: 150px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.account-dropdown.active {
+    display: block;
+}
+
+.account-dropdown a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    color: white;
+    text-decoration: none;
+    text-align: right;
+    transition: background-color 0.3s ease;
+}
+
+.account-dropdown a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.account-dropdown i {
+    margin-left: 0.5rem;
+}
+
+.left-controls {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0.5rem;
+    }
+
+    .site-logo {
+        order: 2;
+    }
+
+    .nav-brand {
+        display: none;
+    }
+
+    .mobile-controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .hamburger, .search-button, .account-button {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu a {
+        width: 100%;
+        text-align: right;
+    }
+}

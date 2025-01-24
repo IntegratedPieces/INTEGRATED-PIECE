@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic-Tac-Toe</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: url('games_background.jpg');
+      background-size: cover;
+    }
+    nav {
+            width: 1863px;
+            background-color: #000;
+            color: #2f2f2f;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(0, 145, 255); /* Crunchyroll's orange color */
+            text-align: center;
+            flex-grow: 1;
+            /* Add this property to make the title take up the remaining space */
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #c4c4c4;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.1s ease-in-out;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color:  #03c4ff;
+            /* Change color on hover */
+        }
+
+        nav i {
+            margin-right: 5px;
+        }
+
+        
+        
+        
+        /* ... (existing styles) */
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #212121;
+    z-index: 1;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease-in-out, opacity 0.3s ease-in-out;
+    position: absolute;
+            top: 185%; /* Position dropdown below the dropdown toggle */
+            left: 0;          
+}
+
+
+.dropdown-content.show {
+    display: block;
+    opacity: 1;
+    max-height: 200px; /* Adjust the maximum height as needed */
+}
+
+/* ... (existing styles) */
+      
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content a {
+            color: rgb(207, 207, 207);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: right; 
+        }
+
+        .dropdown-content a:hover {
+            background-color: #000000;
+        }
+        .dropdown.show .dropdown-content {
+            display: block;
+            opacity: 1;
+            max-height: 200px; /* Adjust the maximum height as needed */
+        }
+
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    table {
+      border-collapse: collapse;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+      background-color: white;
+      padding: 2px;
+    }
+
+    td {
+      width: 120px;
+      height: 120px;
+      border: 4px solid #ddd;
+      text-align: center;
+      font-size: 72px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    td:hover {
+      background-color: #f0f0f0;
+    }
+
+    td.x {
+      color: #ff4d4d; /* Red color for X */
+    }
+
+    td.o {
+      color: #4CAF50; /* Green color for O */
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .win-line {
+      background-color: #ff4d4d;
+      height: 8px;
+      position: absolute;
+      transform-origin: center center;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic-Tac-Toe</h1>
+  <table id="gameBoard">
+    <tr>
+      <td data-index="0"></td>
+      <td data-index="1"></td>
+      <td data-index="2"></td>
+    </tr>
+    <tr>
+      <td data-index="3"></td>
+      <td data-index="4"></td>
+      <td data-index="5"></td>
+    </tr>
+    <tr>
+      <td data-index="6"></td>
+      <td data-index="7"></td>
+      <td data-index="8"></td>
+    </tr>
+  </table>
+  <button id="resetButton">Reset Game</button>
+
+  <script>
+    const board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameOver = false;
+
+    const cells = document.querySelectorAll('#gameBoard td');
+    const resetButton = document.getElementById('resetButton');
+    const gameBoard = document.getElementById('gameBoard');
+
+    cells.forEach(cell => {
+      cell.addEventListener('click', handleClick);
+    });
+
+    resetButton.addEventListener('click', resetGame);
+
+    function handleClick(e) {
+      if (gameOver || currentPlayer === 'O') return;
+      const index = parseInt(e.target.dataset.index);
+      if (board[index] === '') {
+        makeMove(index);
+      }
+    }
+
+    function makeMove(index) {
+      if (board[index] === '') {
+        board[index] = currentPlayer;
+        cells[index].textContent = currentPlayer;
+        cells[index].classList.add(currentPlayer.toLowerCase()); // Add class for color
+        checkWin();
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        if (!gameOver && currentPlayer === 'O') {
+          setTimeout(botMove, 500);
+        }
+      }
+    }
+
+    function botMove() {
+      const availableMoves = board.reduce((acc, val, index) => {
+        if (val === '') acc.push(index);
+        return acc;
+      }, []);
+
+      if (availableMoves.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableMoves.length);
+        makeMove(availableMoves[randomIndex]);
+      }
+    }
+
+    function checkWin() {
+      const winConditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+
+      for (const condition of winConditions) {
+        const [a, b, c] = condition;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          gameOver = true;
+          setTimeout(() => {
+            alert(`Player ${currentPlayer === 'X' ? 'O' : 'X'} wins!`);
+          }, 100);
+          return;
+        }
+      }
+
+      if (!board.includes('')) {
+        gameOver = true;
+        setTimeout(() => {
+          alert("It's a draw!");
+        }, 100);
+      }
+    }
+
+    function resetGame() {
+      board.fill('');
+      currentPlayer = 'X';
+      gameOver = false;
+      cells.forEach(cell => {
+        cell.textContent = '';
+        cell.classList.remove('x', 'o'); // Remove color classes
+      });
+    }
+  </script>
+</body>
+</html>

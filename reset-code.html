@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>التحقق من رمز الاستعادة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0078ce;
+            --background-dark: #060412;
+            --background-darker: #040409;
+            --text-light: #d4d4d4;
+            --text-gray: #b5b5b5;
+            --card-bg: linear-gradient(145deg, #1a1a2e, #16213e);
+            --hover-color: #0099ff;
+            --error-color: #ff4d4d;
+            --success-color: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-darker) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            direction: ltr;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            text-align: right;
+        }
+
+        .verification-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .verification-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-input {
+            width: 45px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            caret-color: transparent;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 120, 206, 0.2);
+        }
+
+        .verify-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, var(--primary-color), var(--hover-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .verify-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .resend-code {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .resend-code a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resend-code a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                width: 95%;
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+
+            .code-input {
+                width: 40px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <h2 class="verification-title">التحقق من رمز الاستعادة</h2>
+        
+        <form id="resetCodeVerificationForm">
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-input" />
+                <input type="text" maxlength="1" class="code-input" />
+                <input type="text" maxlength="1" class="code-input" />
+                <input type="text" maxlength="1" class="code-input" />
+                <input type="text" maxlength="1" class="code-input" />
+                <input type="text" maxlength="1" class="code-input" />
+            </div>
+            
+            <div id="verification-error" class="error-message"></div>
+            
+            <button type="submit" class="verify-button">تأكيد</button>
+            
+            <div class="resend-code">
+                لم تستلم الرمز؟ <a href="#" id="resendCodeLink">إعادة إرسال الرمز</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('resetCodeVerificationForm');
+    const codeInputs = document.querySelectorAll('.code-input');
+    const errorMessage = document.getElementById('verification-error');
+    const resendCodeLink = document.getElementById('resendCodeLink');
+
+    // Focus on the first input when the page loads
+    codeInputs[0].focus();
+
+    // Handle input and navigation
+    codeInputs.forEach((input, index) => {
+        input.addEventListener('keydown', function(e) {
+            const currentInput = this;
+            
+            // Allow only numbers, backspace, arrow keys, and tab
+            const allowedKeys = [
+                'Digit0', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 
+                'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9',
+                'Numpad0', 'Numpad1', 'Numpad2', 'Numpad3', 'Numpad4', 
+                'Numpad5', 'Numpad6', 'Numpad7', 'Numpad8', 'Numpad9',
+                'Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'
+            ];
+
+            // Prevent default for non-allowed keys
+            if (!allowedKeys.includes(e.code) && !e.key.match(/^[0-9]$/)) {
+                e.preventDefault();
+                return;
+            }
+
+            // Handle navigation and input
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (index > 0) {
+                        codeInputs[index - 1].focus();
+                        codeInputs[index - 1].select();
+                    }
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowRight':
+                    if (index < codeInputs.length - 1) {
+                        codeInputs[index + 1].focus();
+                        codeInputs[index + 1].select();
+                    }
+                    e.preventDefault();
+                    break;
+
+                case 'Backspace':
+                    if (currentInput.value === '') {
+                        if (index > 0) {
+                            codeInputs[index - 1].value = '';
+                            codeInputs[index - 1].focus();
+                        }
+                    }
+                    break;
+            }
+        });
+
+        input.addEventListener('input', function(e) {
+            // Sanitize input to only allow numbers
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            // Auto-move to next input when a number is entered
+            if (this.value.length === 1 && index < codeInputs.length - 1) {
+                codeInputs[index + 1].focus();
+            }
+
+            // Validate the entire code
+            validateVerificationCode();
+        });
+
+        // Paste handling
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedText = e.clipboardData.getData('text/plain')
+                .replace(/[^0-9]/g, '')  // Remove non-numeric characters
+                .slice(0, codeInputs.length);  // Limit to input fields
+
+            // Distribute pasted numbers
+            pastedText.split('').forEach((char, i) => {
+                if (i < codeInputs.length) {
+                    codeInputs[i].value = char;
+                }
+            });
+
+            // Focus on the last input
+            codeInputs[Math.min(pastedText.length - 1, codeInputs.length - 1)].focus();
+
+            // Validate
+            validateVerificationCode();
+        });
+    });
+
+    // Validation function
+    function validateVerificationCode() {
+        const code = Array.from(codeInputs).map(input => input.value).join('');
+        
+        if (code.length !== 6) {
+            errorMessage.textContent = 'يرجى إدخال رمز التحقق كاملاً';
+            errorMessage.style.display = 'block';
+            return false;
+        }
+        
+        errorMessage.style.display = 'none';
+        return true;
+    }
+
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (validateVerificationCode()) {
+            const code = Array.from(codeInputs).map(input => input.value).join('');
+            
+            // Simulate verification (replace with actual backend logic)
+            const verificationAttempt = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Mock verification logic
+                    const correctCode = '123456'; // Replace with actual verification logic
+                    
+                    if (code === correctCode) {
+                        resolve();
+                    } else {
+                        reject(new Error('رمز التحقق غير صحيح'));
+                    }
+                }, 1500);
+            });
+
+            // Disable submit button during verification
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'جارٍ التحقق...';
+
+            verificationAttempt
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم التحقق بنجاح',
+                    text: 'يمكنك الآن إعادة تعيين كلمة المرور',
+                    confirmButtonText: 'حسنًا',
+                    didClose: () => {
+                        // Redirect to reset password page
+                        window.location.href = 'reset-password.html';
+                    }
+                });
+            })
+            .catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'فشل التحقق',
+                    text: error.message,
+                    confirmButtonText: 'حسنًا'
+                });
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'تأكيد';
+            });
+        }
+    });
+
+    // Resend code functionality
+    resendCodeLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        Swal.fire({
+            icon: 'info',
+            title: 'إعادة إرسال الرمز',
+            text: 'سيتم إرسال رمز تحقق جديد إلى بريدك الإلكتروني',
+            confirmButtonText: 'حسنًا'
+        });
+    });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الألعاب | Integrated Piece</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="navbar.css">
+<link rel="stylesheet" href="footer.css">
+<script src="navbar drop.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0078ce;
+            --background-dark: #060412;
+            --text-light: #d4d4d4;
+            --footer-bg: linear-gradient(to bottom, #040409, #2b638e);
+            --text-gray: #b5b5b5;
+            --card-bg: #333;
+            --hover-color: #0099ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        .games-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, var(--card-bg), #3a3a3a);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .game-card-content {
+            padding: 1.5rem;
+        }
+
+        .game-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+
+        .game-card p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .play-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .play-button:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        .game-difficulty {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .game-card img {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <img src="logo.png" alt="Site Logo" class="site-logo">
+            <h1 class="nav-brand">INTEGRATED PIECE | قطع مدمجة</h1>
+            <div class="mobile-controls">
+                <div class="right-controls">
+                    <button class="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div> 
+                <div class="left-controls">
+                    <button class="account-button">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="account-dropdown">
+                        <a href="Log in.html"><i class="fas fa-sign-in-alt"></i>تسجيل الدخول</a>
+                        <a href="Create an account.html"><i class="fas fa-user-plus"></i>إنشاء حساب</a>
+                    </div>
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="manga.html"><i class="fas fa-pen"></i> المانغا</a>
+                <a href="storeis.html"><i class="fas fa-book"></i> القصص</a>
+                <a href="#" class="active"><i class="fas fa-gamepad"></i> الألعاب</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="games-container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; padding-right: 1rem; border-right: 4px solid var(--primary-color);">مكتبة الألعاب</h2>
+        
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="game1.webp" alt="لعبة المغامرات">
+                <span class="game-difficulty">سهل</span>
+                <div class="game-card-content">
+                    <h3>بينغ بونغ</h3>
+                    <p>تكسير الأحجار بكرة طائرة</p>
+                    <a href="bricks breaker.html" class="play-button">العب الآن</a>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="game2.webp" alt="لعبة الاستراتيجية">
+                <span class="game-difficulty">متوسط</span>
+                <div class="game-card-content">
+                    <h3>لعبة اكس او</h3>
+                    <p>لعبة استراتيجية </p>
+                    <a href="Tic-Tac-Toe.html" class="play-button">العب الآن</a>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="game3.webp" alt="لعبة المغامرات">
+                <span class="game-difficulty">صعب/سهل</span>
+                <div class="game-card-content">
+                    <h3>كهف المارد</h3>
+                    <p>لعبة الثعبان</p>
+                    <a href="snake game.html" class="play-button">العب الآن</a>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <img src="game4.webp" alt="لعبة الألغاز">
+                <span class="game-difficulty">سهل</span>
+                <div class="game-card-content">
+                    <h3>أسرار المتاهة</h3>
+                    <p>لعبة قيد التطوير</p>
+                    <a href="invaders.html" class="play-button">العب الآن</a>
+                </div>
+            </div>
+
+            
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>تابعنا</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-telegram icon"></i>تيليجرام</a></li>
+                    
+                    <li><a href="#"><i class="fab fa-instagram icon"></i>انستغرام</a></li>
+                    
+                    <li><a href="#"><i class="fab fa-youtube icon"></i>يوتيوب</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok icon"></i>تيك توك</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>الحساب</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-sign-in-alt icon"></i>تسجيل الدخول</a></li>
+                    <li><a href="#"><i class="fas fa-user-plus icon"></i>إنشاء حساب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>قطع مدمجة</h3>
+                <ul class="footer-links">
+                    <li><a href="about.html"><i class="fas fa-info-circle icon"></i>عن الموقع</a></li>
+                    <li><a href="terms.html"><i class="fas fa-file-contract icon"></i>الشروط</a></li>
+                    <li><a href="cookies.html"><i class="fas fa-cookie-bite icon"></i>سياسة الكوكيز</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>التصفح</h3>
+                <ul class="footer-links">
+                    <li><a href="games.html"><i class="fas fa-gamepad icon"></i>الألعاب</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    
+</body>
+</html>

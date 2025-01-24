@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cosmic Escape</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            touch-action: none;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000022;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 800px;
+            background: linear-gradient(to bottom, #000044, #000011);
+            overflow: hidden;
+        }
+
+        #game-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #000044, #000011);
+        }
+
+        #ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            z-index: 10;
+        }
+
+        #start-screen, #game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .game-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .game-button:hover {
+            background-color: #45a049;
+        }
+
+        #power-up-display {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 16px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-overlay">
+            <div id="score-display">Score: 0</div>
+            <div id="lives-display">Lives: 3</div>
+        </div>
+        <div id="power-up-display"></div>
+        <div id="start-screen">
+            <h1>Cosmic Escape</h1>
+            <p>Dodge asteroids, collect power-ups, and survive!</p>
+            <button id="start-button" class="game-button">Start Game</button>
+        </div>
+        <div id="game-over-screen" style="display: none;">
+            <h1>Game Over</h1>
+            <p id="final-score">Your Score: 0</p>
+            <button id="restart-button" class="game-button">Restart</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const scoreDisplay = document.getElementById('score-display');
+        const livesDisplay = document.getElementById('lives-display');
+        const powerUpDisplay = document.getElementById('power-up-display');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const finalScoreElement = document.getElementById('final-score');
+
+        // Particle system for visual effects
+        class ParticleSystem {
+            constructor() {
+                this.particles = [];
+            }
+
+            createExplosion(x, y, color) {
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        radius: Math.random() * 3 + 1,
+                        color: color,
+                        velocityX: (Math.random() - 0.5) * 6,
+                        velocityY: (Math.random() - 0.5) * 6,
+                        alpha: 1
+                    });
+                }
+            }
+
+            update() {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const particle = this.particles[i];
+                    particle.x += particle.velocityX;
+                    particle.y += particle.velocityY;
+                    particle.alpha -= 0.02;
+
+                    if (particle.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+            }
+
+            draw(ctx) {
+                this.particles.forEach(particle => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${particle.color}, ${particle.alpha})`;
+                    ctx.fill();
+                });
+            }
+        }
+
+        // Game state and configurations
+        const gameState = {
+            isRunning: false,
+            score: 0,
+            highScore: localStorage.getItem('cosmicEscapeHighScore') || 0,
+            lives: 3,
+            difficulty: 1,
+            powerUps: []
+        };
+
+        // Player ship
+        const player = {
+            x: 0,
+            y: 0,
+            width: 60,
+            height: 40,
+            speed: 5,
+            color: 'rgba(0,255,255,0.8)',
+            shield: false,
+            shieldDuration: 0
+        };
+
+        // Game objects
+        const asteroids = [];
+        const powerUps = [];
+        const particleSystem = new ParticleSystem();
+
+        // Resize canvas to fit container
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            player.x = canvas.width / 4;
+            player.y = canvas.height / 2;
+        }
+
+        // Draw player ship with shield
+        function drawPlayer() {
+            // Ship body
+            ctx.fillStyle = player.color;
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y - player.height / 2);
+            ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
+            ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // Shield
+            if (player.shield) {
+                ctx.strokeStyle = 'rgba(100,100,255,0.5)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.width * 0.8, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+
+        // Create different types of asteroids
+        function createAsteroid() {
+            const types = [
+                { color: '#888888', speed: 4, size: 30 },
+                { color: '#AA4444', speed: 6, size: 20 },
+                { color: '#444444', speed: 3, size: 40 }
+            ];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            const asteroid = {
+                x: canvas.width,
+                y: Math.random() * (canvas.height - type.size),
+                width: type.size,
+                height: type.size,
+                color: type.color,
+                speed: type.speed + gameState.difficulty
+            };
+            asteroids.push(asteroid);
+        }
+
+        // Create power-ups
+        function createPowerUp() {
+            const types = [
+                { type: 'shield', color: 'rgba(100,100,255,0.8)' },
+                { type: 'extra-life', color: 'rgba(0,255,0,0.8)' },
+                { type: 'speed-boost', color: 'rgba(255,165,0,0.8)' }
+            ];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            const powerUp = {
+                x: canvas.width,
+                y: Math.random() * (canvas.height - 20),
+                width: 20,
+                height: 20,
+                color: type.color,
+                type: type.type
+            };
+            powerUps.push(powerUp);
+        }
+
+        // Draw power-ups
+        function drawPowerUps() {
+            powerUps.forEach(powerUp => {
+                ctx.fillStyle = powerUp.color;
+                ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+            });
+        }
+
+        // Draw asteroids
+        function drawAsteroids() {
+            asteroids.forEach(asteroid => {
+                ctx.fillStyle = asteroid.color;
+                ctx.fillRect(asteroid.x, asteroid.y, asteroid.width, asteroid.height);
+            });
+        }
+
+        // Update game logic
+        function updateGame() {
+            // Increase difficulty over time
+            gameState.difficulty += 0.001;
+
+            // Spawn asteroids and power-ups
+            if (Math.random() < 0.03) {
+                createAsteroid();
+            }
+            if (Math.random() < 0.01) {
+                createPowerUp();
+            }
+
+            // Move asteroids
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                asteroids[i].x -= asteroids[i].speed;
+
+                // Remove offscreen asteroids
+                if (asteroids[i].x + asteroids[i].width < 0) {
+                    asteroids.splice(i, 1);
+                    gameState.score++;
+                    scoreDisplay.textContent = `Score: ${gameState.score}`;
+                }
+            }
+
+            // Move power-ups
+            for (let i = powerUps.length - 1; i >= 0; i--) {
+                powerUps[i].x -= 3;
+
+                // Remove offscreen power-ups
+                if (powerUps[i].x + powerUps[i].width < 0) {
+                    powerUps.splice(i, 1);
+                }
+            }
+
+            // Update shield
+            if (player.shield) {
+                player.shieldDuration--;
+                if (player.shieldDuration <= 0) {
+                    player.shield = false;
+                    powerUpDisplay.textContent = '';
+                }
+            }
+
+            // Update particles
+            particleSystem.update();
+        }
+
+        // Check collision with power-ups
+        function checkPowerUpCollision() {
+            for (let i = powerUps.length - 1; i >= 0; i--) {
+                const powerUp = powerUps[i];
+                if (
+                    player.x < powerUp.x + powerUp.width &&
+                    player.x + player.width > powerUp.x &&
+                    player.y - player.height / 2 < powerUp.y + powerUp.height &&
+                    player.y + player.height / 2 > powerUp.y
+                ) {
+                    // Activate power-up
+                    switch(powerUp.type) {
+                        case 'shield':
+                            player.shield = true;
+                            player.shieldDuration = 300; // 5 seconds
+                            powerUpDisplay.textContent = 'Shield Active!';
+                            break;
+                        case 'extra-life':
+                            gameState.lives++;
+                            livesDisplay.textContent = `Lives: ${gameState.lives}`;
+                            break;
+                        case 'speed-boost':
+                            player.speed *= 1.5;
+                            setTimeout(() => { player.speed /= 1.5; }, 3000);
+                            powerUpDisplay.textContent = 'Speed Boost!';
+                            break;
+                    }
+                    
+                    // Remove collected power-up
+                    powerUps.splice(i, 1);
+                }
+            }
+        }
+
+        // Check collision with asteroids
+        function checkAsteroidCollision() {
+            return asteroids.some(asteroid => 
+                player.x < asteroid.x + asteroid.width &&
+                player.x + player.width > asteroid.x &&
+                player.y - player.height / 2 < asteroid.y + asteroid.height &&
+                player.y + player.height / 2 > asteroid.y
+            );
+        }
+
+        // Game loop
+        function gameLoop() {
+            if (!gameState.isRunning) return;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update game state
+            updateGame();
+
+            // Draw elements
+            drawAsteroids();
+            drawPowerUps();
+            drawPlayer();
+            particleSystem.draw(ctx);
+
+            // Check collisions
+            checkPowerUpCollision();
+            if (checkAsteroidCollision() && !player.shield) {
+                gameState.lives--;
+                livesDisplay.textContent = `Lives: ${gameState.lives}`;
+                
+                // Create explosion
+                particleSystem.createExplosion(player.x, player.y, '255,0,0');
+
+                if (gameState.lives <= 0) {
+                    gameOver();
+                    return;
+                }
+            }
+
+            // Continue game loop
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Move player
+        function movePlayer(e) {
+            if (!gameState.isRunning) return;
+
+            e.preventDefault();
+            let clientY;
+            if (e.touches) {
+                clientY = e.touches[0].clientY;
+            } else {
+                clientY = e.clientY;
+            }
+
+            // Adjust player position
+            player.y = clientY - canvas.offsetTop;
+
+            // Constrain to canvas
+            player.y = Math.max(
+                player.height / 2, 
+                Math.min(player.y, canvas.height - player.height / 2)
+            );
+        }
+
+        // Start game
+        function startGame() {
+            // Reset game state
+            gameState.isRunning = true;
+            gameState.score = 0;
+            gameState.lives = 3;
+            gameState.difficulty = 1;
+            asteroids.length = 0;
+            powerUps.length = 0;
+
+            // Reset UI
+            scoreDisplay.textContent = 'Score: 0';
+            livesDisplay.textContent = 'Lives: 3';
+            powerUpDisplay.textContent = '';
+
+            // Hide screens
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+
+            // Reset player
+            player.y = canvas.height / 2;
+            player.shield = false;
+            player.shieldDuration = 0;
+
+            // Start game loop
+            gameLoop();
+        }
+        // Game Over function
+function gameOver() {
+    gameState.isRunning = false;
+
+    // Update high score
+    if (gameState.score > gameState.highScore) {
+        gameState.highScore = gameState.score;
+        localStorage.setItem('cosmicEscapeHighScore', gameState.highScore);
+    }
+
+    // Show game over screen
+    gameOverScreen.style.display = 'flex';
+    finalScoreElement.textContent = `Your Score: ${gameState.score}`;
+}
+
+// Add event listeners
+function setupEventListeners() {
+    // Resize canvas when window changes
+    window.addEventListener('resize', resizeCanvas);
+
+    // Move player on touch or mouse move
+    canvas.addEventListener('touchmove', movePlayer);
+    canvas.addEventListener('mousemove', movePlayer);
+
+    // Start game button
+    startButton.addEventListener('click', () => {
+        resizeCanvas();
+        startGame();
+    });
+
+    // Restart game button
+    restartButton.addEventListener('click', () => {
+        resizeCanvas();
+        startGame();
+    });
+}
+
+// Initialize game
+function init() {
+    // Initial canvas resize
+    resizeCanvas();
+
+    // Setup event listeners
+    setupEventListeners();
+
+    // Set initial high score display
+    if (gameState.highScore > 0) {
+        scoreDisplay.textContent = `High Score: ${gameState.highScore}`;
+    }
+}
+
+// Call initialization when page loads
+init();
+</script>
+</body>
+</html>
