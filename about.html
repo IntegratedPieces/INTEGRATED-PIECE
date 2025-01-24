@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>من نحن | قطع مدمجة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+    <style>
+        /* Reuse the previous CSS variables and global styles */
+        :root {
+            --primary-color: #0078ce;
+            --background-dark: #060412;
+            --text-light: #d4d4d4;
+            --footer-bg: linear-gradient(to bottom, #040409, #2b638e);
+            --text-gray: #b5b5b5;
+            --card-bg: #333;
+            --hover-color: #0099ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        /* Page-specific styles */
+        .about-section {
+            max-width: 1200px;
+            margin: 64px auto 0;
+            padding: 2rem;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 4px solid var(--primary-color);
+            padding-bottom: 1rem;
+        }
+
+        .about-header h1 {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .team-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .team-member-info {
+            padding: 1.5rem;
+        }
+
+        .team-member-info h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member-info p {
+            color: var(--text-gray);
+        }
+
+        .mission-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            border-radius: 12px;
+        }
+
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .mission-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-section p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 1rem;
+            }
+
+            .team-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Search Overlay (Copied from main page) -->
+    <div class="search-overlay">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="ابحث هنا...">
+            <button class="search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation (Copied from main page) -->
+    <nav>
+        <div class="nav-content">
+            <img src="logo.png" alt="Site Logo" class="site-logo">
+            <h1 class="nav-brand">INTEGRATED PIECE | قطع مدمجة</h1>
+            <div class="mobile-controls">
+                <div class="right-controls">
+                    <button class="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div> 
+                <div class="left-controls">
+                    <button class="account-button">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="account-dropdown">
+                        <a href="Log in.html"><i class="fas fa-sign-in-alt"></i>تسجيل الدخول</a>
+                        <a href="Create an account.html"><i class="fas fa-user-plus"></i>إنشاء حساب</a>
+                    </div>
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="manga.html"><i class="fas fa-pen"></i> المانغا</a>
+                <a href="storeis.html"><i class="fas fa-book"></i> القصص</a>
+                <a href="#"><i class="fas fa-tv"></i> المونتاج</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Us Content -->
+    <div class="about-section">
+        <div class="about-header">
+            <h1>من نحن</h1>
+        </div>
+
+        <div class="mission-section">
+            <div class="mission-content">
+                <h2>مهمتنا</h2>
+                <p>نحن في قطع مدمجة نهدف إلى تقديم محتوى إبداعي متنوع ومتميز للقراء والمهتمين بعالم المانغا والقصص. نؤمن بالقوة التحويلية للقصص وقدرتها على تحفيز الخيال وإلهام العقول.</p>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <div class="team-member">
+                <img src="pro5.webp" alt="محمد حسن">
+                <div class="team-member-info">
+                    <h3>اكسيمو</h3>
+                    <p>المؤسس والرئيس التنفيذي</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="pro6.webp" alt="سارة محمود">
+                <div class="team-member-info">
+                    <h3>بتسا</h3>
+                    <p>مصمم الموقع</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="pro4.webp" alt="أحمد علي">
+                <div class="team-member-info">
+                    <h3>أحمد علي</h3>
+                    <p>رئيس التحرير</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="pro3.webp" alt="ليلى إبراهيم">
+                <div class="team-member-info">
+                    <h3>ليلى إبراهيم</h3>
+                    <p>مسؤولة التسويق</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (Copied from main page) -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>تابعنا</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-telegram icon"></i>تيليجرام</a></li>
+                    
+                    <li><a href="#"><i class="fab fa-instagram icon"></i>انستغرام</a></li>
+                    
+                    <li><a href="#"><i class="fab fa-youtube icon"></i>يوتيوب</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok icon"></i>تيك توك</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>الحساب</h3>
+                <ul class="footer-links">
+                    <li><a href="Log in.html"><i class="fas fa-sign-in-alt icon"></i>تسجيل الدخول</a></li>
+                    <li><a href="Create an account.html"><i class="fas fa-user-plus icon"></i>إنشاء حساب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>قطع مدمجة</h3>
+                <ul class="footer-links">
+                    <li><a href="about.html"><i class="fas fa-info-circle icon"></i>عن الموقع</a></li>
+                    <li><a href="terms.html"><i class="fas fa-file-contract icon"></i>الشروط</a></li>
+                    <li><a href="cookies.html"><i class="fas fa-cookie-bite icon"></i>سياسة الكوكيز</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>التصفح</h3>
+                <ul class="footer-links">
+                    <li><a href="games.html"><i class="fas fa-gamepad icon"></i>الألعاب</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Include the same JavaScript from the main page for navigation and search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation elements
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            const searchButton = document.querySelector('.search-button');
+            const searchOverlay = document.querySelector('.search-overlay');
+            const searchClose = document.querySelector('.search-close');
+            const searchInput = document.querySelector('.search-input');
+            const accountButton = document.querySelector('.account-button');
+            const accountDropdown = document.querySelector('.account-dropdown');
+
+            // Mobile menu toggle
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+
+            // Search functionality
+            searchButton.addEventListener('click', () => {
+                searchOverlay.classList.add('active');
+                searchInput.focus();
+            });
+
+            searchClose.addEventListener('click', () => {
+                searchOverlay.classList.remove('active');
+            });
+
+            // Close search on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                    searchOverlay.classList.remove('active');
+                }
+            });
+
+            // Account dropdown functionality
+            accountButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accountDropdown.classList.toggle('active');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!accountButton.contains(e.target)) {
+                    accountDropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
