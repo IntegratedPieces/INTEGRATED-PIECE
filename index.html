@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Integrated Piece | قطع مدمجة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="navbar.css">
+<link rel="stylesheet" href="footer.css">
     <style>
         :root {
             --primary-color: #0078ce;
@@ -31,80 +33,7 @@
             direction: rtl;
         }
 
-        /* Navigation Styles */
-        nav {
-            background-color: rgba(0, 0, 0, 0.95);
-            padding: 0.2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .site-logo {
-            height: 40px;
-            width: auto;
-            order: 2;
-        }
-
-        .nav-brand {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            text-decoration: none;
-            order: 1;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            order: 3;
-        }
-
-        .nav-menu a {
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 0.8rem 1.2rem;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            font-weight: bold;
-            position: relative;
-        }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 0;
-            height: 3px;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-
-        .nav-menu a:hover {
-            color: var(--primary-color);
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-menu i {
-            margin-left: 0.5rem;
-        }
+        
 
         /* Hero Banner Styles */
         .hero-banner {
@@ -735,8 +664,8 @@
                     <i class="fas fa-user"></i>
                 </button>
                 <div class="account-dropdown">
-                    <a href="#"><i class="fas fa-sign-in-alt"></i>تسجيل الدخول</a>
-                    <a href="#"><i class="fas fa-user-plus"></i>إنشاء حساب</a>
+                    <a href="Log in.html"><i class="fas fa-sign-in-alt"></i>تسجيل الدخول</a>
+                    <a href="Create an account.html"><i class="fas fa-user-plus"></i>إنشاء حساب</a>
                 </div>
                 <button class="search-button">
                     <i class="fas fa-search"></i>
@@ -822,9 +751,9 @@
                 <h3>تابعنا</h3>
                 <ul class="footer-links">
                     <li><a href="#"><i class="fab fa-telegram icon"></i>تيليجرام</a></li>
-                    <li><a href="#"><i class="fab fa-facebook icon"></i>فيسبوك</a></li>
+                    
                     <li><a href="#"><i class="fab fa-instagram icon"></i>انستغرام</a></li>
-                    <li><a href="#"><i class="fab fa-twitter icon"></i>تويتر</a></li>
+                    
                     <li><a href="#"><i class="fab fa-youtube icon"></i>يوتيوب</a></li>
                     <li><a href="#"><i class="fab fa-tiktok icon"></i>تيك توك</a></li>
                 </ul>
@@ -833,25 +762,24 @@
             <div class="footer-section">
                 <h3>الحساب</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-sign-in-alt icon"></i>تسجيل الدخول</a></li>
-                    <li><a href="#"><i class="fas fa-user-plus icon"></i>إنشاء حساب</a></li>
+                    <li><a href="Log in.html"><i class="fas fa-sign-in-alt icon"></i>تسجيل الدخول</a></li>
+                    <li><a href="Create an account.html"><i class="fas fa-user-plus icon"></i>إنشاء حساب</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h3>قطع مدمجة</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-info-circle icon"></i>عن الموقع</a></li>
-                    <li><a href="#"><i class="fas fa-file-contract icon"></i>الشروط</a></li>
-                    <li><a href="#"><i class="fas fa-cookie-bite icon"></i>سياسة الكوكيز</a></li>
-                    <li><a href="#"><i class="fas fa-mobile-alt icon"></i>التطبيقات</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle icon"></i>عن الموقع</a></li>
+                    <li><a href="terms.html"><i class="fas fa-file-contract icon"></i>الشروط</a></li>
+                    <li><a href="cookies.html"><i class="fas fa-cookie-bite icon"></i>سياسة الكوكيز</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h3>التصفح</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-gamepad icon"></i>الألعاب</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad icon"></i>الألعاب</a></li>
                 </ul>
             </div>
         </div>
