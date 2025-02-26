@@ -679,6 +679,7 @@
             <a href="#"><i class="fas fa-tv"></i> المونتاج</a>
         </div>
     </div>
+    
 </nav>
     <div class="hero-banner">
         <div class="hero-slide active">
@@ -716,6 +717,14 @@
                 <p class="hero-description">**دراغون بول** أنمي أكشن ملحمي يتبع مغامرات "غوكو" في البحث عن كرات التنين السبع وتحقيق الأمنيات، مليء بالمعارك والشخصيات القوية!</p>
                 <a href="#" class="watch-button">ابدأ المشاهدة</a>
             </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: Dubbed Anime Section -->
+    <div class="slider-container">
+        <h2 class="slider-title">أحدث الأنميات المدبلجة</h2>
+        <div class="card-slider dubbed-anime-slider">
+            <!-- Dubbed Anime cards will be added by JavaScript -->
         </div>
     </div>
 
@@ -787,6 +796,7 @@
     
     <script>
   // Wait for DOM to be fully loaded
+// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation elements
     const hamburger = document.querySelector('.hamburger');
@@ -849,9 +859,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(nextSlide, 5000);
 
+    // Create Dubbed Anime Cards
+    const createDubbedAnimeCards = () => {
+        const slider = document.querySelector('.dubbed-anime-slider');
+        const dubbedAnimeData = [
+            { title: 'جوجتسو كايسن(مدبلج)', image: 'anime.jpg' },
+            { title: 'اسمك (مدبلج)', image: 'anime1.jpg' },
+            { title: 'كونان (مدبلج)', image: 'anime2.jpg' },
+            { title: 'قاتل الشياطين (مدبلج)', image: 'anime3.jpg' },
+            { title: 'كونان (مدبلج)', image: 'anime4.jpg' },
+            { title: 'ون بيس (مدبلج)', image: 'anime5.jpg' }
+        ];
+
+        dubbedAnimeData.forEach(anime => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${anime.image}" alt="${anime.title}">
+                <div class="card-content">
+                    <h3>${anime.title}</h3>
+                </div>
+            `;
+            slider.appendChild(card);
+        });
+    };
+
     // Card creation functions
     const createMangaCards = () => {
-        const slider = document.querySelector('.card-slider');
+        const slider = document.querySelector('.card-slider:not(.dubbed-anime-slider):not(.stories-slider):not(.videos-slider)');
         const mangaData = [
             { title: 'هجوم العمالقة', image: 'manga1.webp' },
             { title: 'قاتل الشياطين', image: 'manga2.webp' },
@@ -932,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-const createVideoCards = () => {
+    const createVideoCards = () => {
         const slider = document.querySelector('.videos-slider');
         const videoData = [
             { 
@@ -982,6 +1017,7 @@ const createVideoCards = () => {
     };
 
     // Initialize all card sliders
+    createDubbedAnimeCards();
     createMangaCards();
     createStoryCards();
     createVideoCards();
