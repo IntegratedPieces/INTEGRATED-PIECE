@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rickroll</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff5252;
+        }
+        .rick-button {
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .rick-button:hover {
+            background-color: #ff0000;
+        }
+        .dance {
+            animation: dance 1s infinite;
+        }
+        @keyframes dance {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-10px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NEVER GONNA GIVE YOU UP</h1>
+        <img src="download.jpg" alt="Rick Astley" id="rick-image">
+        <div>
+            <button class="rick-button" id="rick-button">CLICK ME</button>
+        </div>
+        <audio id="rickroll-audio" loop>
+            <source src="Rick.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        document.getElementById('rick-button').addEventListener('click', function() {
+            const rickImage = document.getElementById('rick-image');
+            rickImage.classList.toggle('dance');
+            
+            const audio = document.getElementById('rickroll-audio');
+            
+            if (audio.paused) {
+                audio.play();
+                this.textContent = "MAKE IT STOP!";
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                this.textContent = "CLICK ME";
+                rickImage.classList.remove('dance');
+            }
+        });
+    </script>
+</body>
+</html>
